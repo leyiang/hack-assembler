@@ -39,43 +39,50 @@ class Parser:
         else:
             return self.C_INSTRUCTION
     
-    def symbol(self) -> str:
+    def _instrOnlyFor(self, types, methodName):
+        if len(types) == 0:
+            raise Exception("You need to put at least one type in types array")
+
         instrType = self.instructionType()
+
+        if instrType not in types:
+            typeLables = map(lambda x: Parser.INSTRUCTION_TYPE_LABEL[x], types)
+            typeLables = "&".join( typeLables )
+            raise Exception(f"Only { typeLables } Instruction can call { methodName }()")
+
+        return instrType
+
+    def symbol(self) -> str:
+        instrType = self._instrOnlyFor([
+            self.A_INSTRUCTION,
+            self.L_INSTRUCTION
+        ], "symbol");
 
         if instrType == self.A_INSTRUCTION:
             return self.line[1:]
         elif instrType == self.L_INSTRUCTION:
             return self.line[1:-1]
-        else:
-            raise Exception("Only A & L Instruction can call symbol()")
 
     def dest(self) -> str:
-        instrType = self.instructionType()
+        self._instrOnlyFor([self.C_INSTRUCTION], "dest")
 
-        if instrType == self.C_INSTRUCTION:
-            eqSignPos = self.line.find("=")
+        eqSignPos = self.line.find("=")
 
-            if eqSignPos <= -1:
-                return "null"
-            else:
-                return self.line[:eqSignPos]
+        if eqSignPos <= -1:
+            return "null"
         else:
-            raise Exception("Only C Instruction can call dest()")
+            return self.line[:eqSignPos]
 
     def comp(self) -> str:
         return "";
 
     def jump(self) -> str:
-        instrType = self.instructionType()
+        self._instrOnlyFor([self.C_INSTRUCTION], "jump")
 
-        if instrType == self.C_INSTRUCTION:
-            scPos = self.line.find(";")
-
-            if scPos <= -1:
-                return "null"
-            elif scPos == len(self.line) -1:
-                raise Exception("Syntax Error: no jump found after semicolon, line: " + self.line)
-            else:
-                return self.line[scPos+1:]
+        scPos = self.line.find(";")
+        if scPos <= -1:
+            return "null"
+        elif scPos == len(self.line) -1:
+            raise Exception("Syntax Error: no jump found after semicolon, line: " + self.line)
         else:
-            raise Exception("Only C Instruction can call dest()")
+            return self.line[scPos+1:]
