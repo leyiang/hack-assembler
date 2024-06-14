@@ -24,6 +24,6 @@ while parser.hasMoreLines():
 
         print("\tDest: ", dest, code.dest( dest ) )
         print("\tJump: ", jump, code.jump( jump ) )
-        print("\tComp: ", parser.comp() )
+        print("\tComp: ", comp, code.comp( comp ) )
 
     parser.advance()
