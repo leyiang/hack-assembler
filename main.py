@@ -9,9 +9,13 @@ parser = Parser( sys.argv[1] )
 file = parser.file
 
 while parser.hasMoreLines():
-    print( parser.line, parser.instructionType() )
+    instrType = parser.instructionType()
+    print( f"({Parser.INSTRUCTION_TYPE_LABEL[instrType]})", parser.line )
 
-    if parser.instructionType() is not Parser.C_INSTRUCTION:
-        print("Symbol: [" + parser.symbol() + "]")
+    if instrType is not Parser.C_INSTRUCTION:
+        print("\tSymbol: [" + parser.symbol() + "]")
+    
+    if instrType is Parser.C_INSTRUCTION:
+        print("\tDest: ", parser.dest() )
 
     parser.advance()
