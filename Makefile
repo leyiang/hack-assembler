@@ -1,5 +1,5 @@
 run:
-	python main.py ./asm-example/Rect.asm
+	python main.py ./asm-example/Add.asm
 
 edit:
 	nvim main.py

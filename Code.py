@@ -133,3 +133,6 @@ class Code:
         if raw not in Code.JUMP_MAP:
             raise Exception("Invalid Jump Expression")
         return Code.JUMP_MAP[ raw ]
+    
+    def ainstr_imm(self, raw) -> str:
+        return format(int(raw), '#016')
