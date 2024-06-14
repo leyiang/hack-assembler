@@ -74,7 +74,16 @@ class Parser:
             return self.line[:eqSignPos]
 
     def comp(self) -> str:
-        return "";
+        self._instrOnlyFor([self.C_INSTRUCTION], "jump")
+        eqPos = self.line.find("=")
+        eqPos = 0 if eqPos < 0 else eqPos + 1
+
+        scPos = self.line.find(";")
+        scPos = len(self.line) if scPos < 0 else scPos
+
+        compRaw = self.line[eqPos:scPos]
+
+        return compRaw
 
     def jump(self) -> str:
         self._instrOnlyFor([self.C_INSTRUCTION], "jump")
