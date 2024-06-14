@@ -19,8 +19,11 @@ while parser.hasMoreLines():
     
     if instrType is Parser.C_INSTRUCTION:
         dest = parser.dest()
+        jump = parser.jump()
+        comp = parser.comp()
+
         print("\tDest: ", dest, code.dest( dest ) )
-        print("\tJump: ", parser.jump() )
+        print("\tJump: ", jump, code.jump( jump ) )
         print("\tComp: ", parser.comp() )
 
     parser.advance()

@@ -1,5 +1,13 @@
 class Code:
-    INSTR_MAP = {
+    JUMP_MAP = {
+        "null": "000",
+        "JGT" : "001",
+        "JEQ" : "010",
+        "JGE" : "011",
+        "JLT" : "100",
+        "JNE" : "101",
+        "JLE" : "110",
+        "JMP" : "111",
     }
 
     def __init__(self):
@@ -31,5 +39,7 @@ class Code:
     def comp(self) -> str:
         pass
 
-    def jump(self) -> str:
-        pass
+    def jump(self, raw) -> str:
+        if raw not in Code.JUMP_MAP:
+            raise Exception("Invalid Jump Expression")
+        return Code.JUMP_MAP[ raw ]
