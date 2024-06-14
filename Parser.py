@@ -38,7 +38,14 @@ class Parser:
             return self.C_INSTRUCTION
     
     def symbol(self) -> str:
-        return "";
+        itype = self.instructionType()
+
+        if itype == self.A_INSTRUCTION:
+            return self.line[1:]
+        elif itype == self.L_INSTRUCTION:
+            return self.line[1:-1]
+        else:
+            raise Exception("Only A & L Instruction can call symbol()")
 
     def dest(self) -> str:
         return "";
