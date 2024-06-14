@@ -1,4 +1,8 @@
 class Parser:
+    A_INSTRUCTION=0
+    C_INSTRUCTION=1
+    L_INSTRUCTION=2
+
     def __init__(self, file_path) -> None:
         self.file = open(file_path, "r")
         self.line = ""
@@ -26,7 +30,12 @@ class Parser:
         self.skip()
 
     def instructionType(self) -> int:
-        return 0
+        if self.line[0] == "@":
+            return self.A_INSTRUCTION
+        elif self.line[0] == "(":
+            return self.L_INSTRUCTION
+        else:
+            return self.C_INSTRUCTION
     
     def symbol(self) -> str:
         return "";

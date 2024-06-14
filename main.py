@@ -9,5 +9,5 @@ parser = Parser.Parser( sys.argv[1] )
 file = parser.file
 
 while parser.hasMoreLines():
-    print( parser.line )
+    print( parser.line, parser.instructionType() )
     parser.advance()
