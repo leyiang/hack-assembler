@@ -12,3 +12,6 @@
     D=D+A
     @0
     M=D
+
+D;JGE
+;JMP

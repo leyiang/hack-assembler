@@ -66,4 +66,16 @@ class Parser:
         return "";
 
     def jump(self) -> str:
-        return "";
+        instrType = self.instructionType()
+
+        if instrType == self.C_INSTRUCTION:
+            scPos = self.line.find(";")
+
+            if scPos <= -1:
+                return "null"
+            elif scPos == len(self.line) -1:
+                raise Exception("Syntax Error: no jump found after semicolon, line: " + self.line)
+            else:
+                return self.line[scPos+1:]
+        else:
+            raise Exception("Only C Instruction can call dest()")
