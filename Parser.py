@@ -8,7 +8,8 @@ class Parser:
     def __init__(self, file_path) -> None:
         self.file = open(file_path, "r")
         self.line = ""
-        self.skip()
+        self.lineNo = -1 # start at 0, every skip(advance) will increment lineNo
+        self.advance()
 
     def hasMoreLines(self) -> bool:
         return bool( self.line )
@@ -30,6 +31,9 @@ class Parser:
         
     def advance(self):
         self.skip()
+
+        if self.hasMoreLines() and self.instructionType() is not Parser.L_INSTRUCTION:
+            self.lineNo += 1
 
     def instructionType(self) -> int:
         if self.line[0] == "@":
