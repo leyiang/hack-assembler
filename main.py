@@ -47,5 +47,9 @@ for i,raw in enumerate(compareFile):
         break
 
 print("Test Passed for " + sys.argv[2])
-# print( bits )
+
+raw = "\n".join( bits )
+with open("./test.hack", "w") as file:
+    file.write( raw )
+    
 # print( compareFile.readlines() )
