@@ -2,38 +2,49 @@ import sys
 import re
 from Parser import Parser
 from Code import Code
+from utils import log
 
-if len(sys.argv) < 2:
-    print("Usage: \n\tpython main.py <asm file path>")
+if len(sys.argv) < 3:
+    print("Usage: \n\tpython main.py <asm file path> <compare-test-file>")
     exit()
 
-code = Code()
-parser = Parser( sys.argv[1] )
-file = parser.file
+def assemble(path):
+    code = Code()
+    parser = Parser( path )
+    file = parser.file
+    result = []
 
-while parser.hasMoreLines():
-    instrType = parser.instructionType()
-    print( f"({Parser.INSTRUCTION_TYPE_LABEL[instrType]})", parser.line )
-    bits = ""
+    while parser.hasMoreLines():
+        instrType = parser.instructionType()
+        bits = ""
 
-    if instrType is not Parser.C_INSTRUCTION:
-        print("\tSymbol: [" + parser.symbol() + "]")
+        if instrType is Parser.A_INSTRUCTION:
+            symbol = parser.symbol()
+            if re.match("^[0-9]", symbol):
+                bits = code.ainstr_imm( symbol )
+        
+        if instrType is Parser.C_INSTRUCTION:
+            dest = parser.dest()
+            jump = parser.jump()
+            comp = parser.comp()
+            bits = "111" + code.dest( dest ) + code.jump( jump ) + code.comp( comp ) 
+
+        parser.advance()
+        result.append( bits )
     
-    if instrType is Parser.A_INSTRUCTION:
-        symbol = parser.symbol()
-        if re.match("^[0-9]", symbol):
-            bits = code.ainstr_imm( symbol )
-            print("\tBits: ", bits)
-    
-    if instrType is Parser.C_INSTRUCTION:
-        dest = parser.dest()
-        jump = parser.jump()
-        comp = parser.comp()
+    return result
 
-        print("\tDest: ", dest, code.dest( dest ) )
-        print("\tJump: ", jump, code.jump( jump ) )
-        print("\tComp: ", comp, code.comp( comp ) )
-        bits = "111" + code.dest( dest ) + code.jump( jump ) + code.comp( comp ) 
+bits = assemble(sys.argv[1])
+compareFile = open(sys.argv[2])
 
-        print("\tBits: ", bits )
-    parser.advance()
+for i,raw in enumerate(compareFile):
+    compare = raw.strip()
+    line = bits[i]
+    if line != compare:
+        log(f"Test failed at line {i+1} of { sys.argv[2] }")
+        print("Your code: \t" + line)
+        print("Correct code: \t" + compare)
+        break
+
+# print( bits )
+# print( compareFile.readlines() )
