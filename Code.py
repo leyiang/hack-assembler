@@ -17,7 +17,7 @@ class Code:
         "1":   "111111",
         "-1":  "111010",
         "D":   "001100",
-        
+
         "A":   "110000",
         "M":   "110000",
         "!D":  "001101",
@@ -136,4 +136,4 @@ class Code:
         return Code.JUMP_MAP[ raw ]
     
     def ainstr_imm(self, raw) -> str:
-        return format(int(raw), '#016')
+        return format(int(raw), '016b')
