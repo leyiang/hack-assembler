@@ -27,7 +27,7 @@ def assemble(path):
             dest = parser.dest()
             jump = parser.jump()
             comp = parser.comp()
-            bits = "111" + code.dest( dest ) + code.jump( jump ) + code.comp( comp ) 
+            bits = "111" + code.comp( comp ) + code.dest( dest ) + code.jump( jump )
 
         parser.advance()
         result.append( bits )
@@ -46,5 +46,6 @@ for i,raw in enumerate(compareFile):
         print("Correct code: \t" + compare)
         break
 
+print("Test Passed for " + sys.argv[2])
 # print( bits )
 # print( compareFile.readlines() )
