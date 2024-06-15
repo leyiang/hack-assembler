@@ -1,1 +1,1 @@
-Hack Assembly Language Assembler from [Nand2tetris](https://www.nand2tetris.org/).
+Hack Assembly Language Assembler build for [Nand2tetris](https://www.nand2tetris.org/).
